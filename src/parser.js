@@ -40,16 +40,32 @@ module.exports = class Parser {
           .each(function(index, elem) {
             let key = ($(elem).find("th").text());
             let value = ($(elem).find("td").text());
-            if (value == "Yok") {
+            if (value == "undefined") {
               value = "N/A";
             }
             data.push({[key] : value})
           });
-      setTimeout(function() { callback(null, data); }, 5000);
+      setTimeout(function() { callback(null, data); }, 2000);
     });
   }
 
   txtGenerator() {
     this.parser((error, data) => { console.log(data); });
+  }
+
+  // Will be removed after db mechanism implemented.
+  simpleSearch(arg) {
+    this.parser((error, data) => {
+      let searchedKey = "";
+      for (var i = 0, len = data.length; i < len; i++) {
+        if (!data[i][arg]) {
+          searchedKey = "N/A";
+        }
+        if (data[i][arg]) {
+          searchedKey = data[i][arg];
+        }
+      }
+      console.log(searchedKey);
+    });
   }
 };
