@@ -1,5 +1,6 @@
 const request = require("request");
 const cheerio = require("cheerio");
+const writer = require("./writer");
 
 module.exports = class Parser {
   constructor() {
@@ -43,9 +44,12 @@ module.exports = class Parser {
             if (value == "undefined") {
               value = "N/A";
             }
-            data.push({[key] : value})
+            data.push({[key] : value});
           });
-      setTimeout(function() { callback(null, data); }, 2000);
+      setTimeout(function() {
+        writer(data);
+        callback(null, data);
+      }, 2000);
     });
   }
 
