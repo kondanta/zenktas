@@ -20,7 +20,7 @@ module.exports = class Parser {
             function(error, response, body) { callback(null, error, body); });
   }
 
-  printer(data) { console.log(data[0]["Marka"]); }
+  printer(data) { console.log(data[0][data]); }
 
   /*
    * Parsing the website and create key value pairs for txt/json creation.
@@ -38,6 +38,9 @@ module.exports = class Parser {
         return -1;
       }
       const $ = cheerio.load(body);
+      // name of the product
+      const name = $(body).find("#product-name").text();
+      // finding phone data
       $(body)
           .find("#productTechSpecContainer table.data-list.tech-spec tbody tr")
           .each(function(index, elem) {
@@ -50,7 +53,8 @@ module.exports = class Parser {
           });
       setTimeout(function() {
         writer(data);
-        db.insertIntoProduct(JSON.stringify(data));
+        db.insertIntoProduct(name.replace(/\n|\r|\t/g, ""),
+                             JSON.stringify(data));
         callback(null, data);
       }, 2000);
       db.close();
