@@ -27,11 +27,24 @@ module.exports = class Db {
   /*
    * Prints information about product using categoryID
    */
-  getPoduct() {
+  getProduct(callback) {
     var product = productModel;
     this.getCategoryId((err, data) => {
-      product.find({categoryID : data},
-                   function(err, data) { console.log(data); });
+      product.find({categoryID : data}, function(err, info) {
+        /* console.log(info); */
+        callback(null, info);
+      });
+    });
+  }
+
+  getProductId(callback) {
+    var model = productModel;
+    var ids = [];
+    model.find({}, function(err, data) {
+      for (var i = 0, len = data.length; i < len; i++) {
+        ids.push(data[i]["_id"]);
+      }
+      callback(null, ids);
     });
   }
 

@@ -1,7 +1,7 @@
 const request = require("request");
 const cheerio = require("cheerio");
-const writer = require("./writer");
 const Db = require("./db");
+const writer = require("./writer");
 
 module.exports = class Parser {
   constructor(url) { this.url = url; }
@@ -23,7 +23,6 @@ module.exports = class Parser {
    * Parsing the website and create key value pairs for txt/json creation.
    * Function callback Callback function that provides key/value pairs.
    */
-  // TODO: DB integration
   parser(callback) {
     let data = [];
     let db = new Db();
@@ -72,6 +71,7 @@ module.exports = class Parser {
         }
         if (data[i][arg]) {
           searchedKey = data[i][arg];
+          break;
         }
       }
       console.log(searchedKey);
