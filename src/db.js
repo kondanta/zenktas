@@ -12,6 +12,14 @@ module.exports = class Db {
     modal.find({}, function(err, data) { console.log(data); });
   }
 
+  /*
+   * Returns to the category ID
+   * @param {Function} callback callback.
+   */
+  getCategoryId(callback) {
+    var model = categoryModel;
+    model.find({}, function(err, data) { callback(null, data[0]["_id"]); })
+  }
   getPoduct() {
     var product = productModel;
     product.find({}, function(err, data) { console.log(data); });
