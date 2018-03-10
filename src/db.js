@@ -7,7 +7,10 @@ mongoose.connect("mongodb://kon:111111@ds261088.mlab.com:61088/zenk");
 
 module.exports = class Db {
   constructor() { this.name = ""; }
-  getCatagory() {
+  /*
+   * Prints information about category
+   */
+  getCategory() {
     var modal = categoryModel;
     modal.find({}, function(err, data) { console.log(data); });
   }
@@ -20,25 +23,50 @@ module.exports = class Db {
     var model = categoryModel;
     model.find({}, function(err, data) { callback(null, data[0]["_id"]); })
   }
+
+  /*
+   * Prints information about product using categoryID
+   */
   getPoduct() {
     var product = productModel;
-    product.find({}, function(err, data) { console.log(data); });
+    this.getCategoryId((err, data) => {
+      product.find({categoryID : data},
+                   function(err, data) { console.log(data); });
+    });
   }
 
-  insertIntoProduct(data) {
+  /*
+   * Inserts parsed information into the database.
+   * @param {String} name Name of the product
+   * @param {Array} data Attributes that product has.
+   *
+   */
+  insertIntoProduct(name, data) {
     // getting connection
     var db = mongoose.connection;
     var Product = productModel;
-    var newProduct = new Product({
-      productName : "Test",
-      categoryID : 1,
-      attributes : data,
-      updateDate : new Date().getDate()
+    this.getCategoryId((error, data) => {
+      var newProduct = new Product({
+        productName : name,
+        categoryID : data,
+        attributes : data,
+        updateDate : new Date().toISOString()
+      });
+      newProduct.save(function(err, data) {
+        if (err)
+          throw err;
+        console.log("Saved");
+      });
     });
-    console.log(newProduct);
   }
 
+  /*
+   * Closes the db connection after 7 secs.
+   */
   close() {
-    setTimeout(function() { mongoose.connection.close(); }, 2000);
+    setTimeout(function() {
+      console.log("Database connection is shut down.");
+      mongoose.connection.close();
+    }, 7000);
   }
 };
