@@ -19,6 +19,7 @@ module.exports = class Db {
    * Returns to the category ID
    * @param {Function} callback callback.
    */
+  // TODO must take a model for deciding which catalog we want to use.
   getCategoryId(callback) {
     var model = categoryModel;
     model.find({}, function(err, data) { callback(null, data[0]["_id"]); })
@@ -45,10 +46,10 @@ module.exports = class Db {
     // getting connection
     var db = mongoose.connection;
     var Product = productModel;
-    this.getCategoryId((error, data) => {
+    this.getCategoryId((error, id) => {
       var newProduct = new Product({
         productName : name,
-        categoryID : data,
+        categoryID : id,
         attributes : data,
         updateDate : new Date().toISOString()
       });

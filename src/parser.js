@@ -4,10 +4,7 @@ const writer = require("./writer");
 const Db = require("./db");
 
 module.exports = class Parser {
-  constructor() {
-    this.url =
-        "https://www.hepsiburada.com/apple-iphone-6s-32-gb-apple-turkiye-garantili-p-HBV0000017G26"
-  }
+  constructor(url) { this.url = url }
 
   /*
    * Returns to the data from website
