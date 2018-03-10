@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const productModel = require("./models/product_model");
 const categoryModel = require("./models/catalog_model");
 
-let Schema = mongoose.Schema;
 mongoose.connect("mongodb://kon:111111@ds261088.mlab.com:61088/zenk");
 
 module.exports = class Db {
@@ -22,7 +21,7 @@ module.exports = class Db {
   // TODO must take a model for deciding which catalog we want to use.
   getCategoryId(callback) {
     var model = categoryModel;
-    model.find({}, function(err, data) { callback(null, data[0]["_id"]); })
+    model.find({}, function(err, data) { callback(null, data[0]["_id"]); });
   }
 
   /*
@@ -44,7 +43,6 @@ module.exports = class Db {
    */
   insertIntoProduct(name, data) {
     // getting connection
-    var db = mongoose.connection;
     var Product = productModel;
     this.getCategoryId((error, id) => {
       var newProduct = new Product({

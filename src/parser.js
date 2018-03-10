@@ -4,7 +4,7 @@ const writer = require("./writer");
 const Db = require("./db");
 
 module.exports = class Parser {
-  constructor(url) { this.url = url }
+  constructor(url) { this.url = url; }
 
   /*
    * Returns to the data from website
@@ -31,7 +31,7 @@ module.exports = class Parser {
     this.get(this.url, (error, response, body) => {
       // guard
       if (error) {
-        consoe.log("error");
+        console.log("error");
         return -1;
       }
       const $ = cheerio.load(body);
