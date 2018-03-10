@@ -1,6 +1,7 @@
 const request = require("request");
 const cheerio = require("cheerio");
 const writer = require("./writer");
+const Db = require("./db");
 
 module.exports = class Parser {
   constructor() {
@@ -28,6 +29,7 @@ module.exports = class Parser {
   // TODO: DB integration
   parser(callback) {
     let data = [];
+    let db = new Db();
     // productTechSpecContainer
     this.get(this.url, (error, response, body) => {
       // guard
@@ -48,8 +50,10 @@ module.exports = class Parser {
           });
       setTimeout(function() {
         writer(data);
+        db.insertIntoProduct(JSON.stringify(data));
         callback(null, data);
       }, 2000);
+      db.close();
     });
   }
 
